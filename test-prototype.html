@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCare Prototype Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #E0426E;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .pending { background: #fff3cd; color: #856404; }
+        h1 { color: #1F3C73; }
+        h2 { color: #E0426E; }
+        .note { 
+            background: #e7f3ff; 
+            padding: 10px; 
+            border-radius: 4px; 
+            margin: 10px 0;
+            border-left: 4px solid #1F3C73;
+        }
+    </style>
+</head>
+<body>
+    <h1>SmartCare Web App - Prototype Test Checklist</h1>
+    
+    <div class="note">
+        <strong>Test Instructions:</strong> Open the main application (index.html) in a browser and verify each test item below. 
+        Use username "SK" and any non-empty password for login testing.
+    </div>
+
+    <div class="test-section">
+        <h2>1. Authentication Flow</h2>
+        <div class="test-item">
+            <strong>Splash Screen Display</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ SmartCare logo and subtitle visible<br>
+            ✓ Login button present and clickable<br>
+            ✓ Clean, professional design</p>
+        </div>
+        <div class="test-item">
+            <strong>Login Page</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Username and password fields<br>
+            ✓ Forgot Password and New Password links<br>
+            ✓ Login button<br>
+            ✓ Form validation (try empty fields)</p>
+        </div>
+        <div class="test-item">
+            <strong>Login Validation</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Wrong username shows "Username is incorrect"<br>
+            ✓ Wrong password shows "Password is incorrect"<br>
+            ✓ Both wrong shows combined error<br>
+            ✓ Correct credentials (SK + any password) logs in successfully</p>
+        </div>
+        <div class="test-item">
+            <strong>Password Setup Flow</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Click "Forgot Password" or "New Password"<br>
+            ✓ Password setup form appears<br>
+            ✓ Password confirmation validation<br>
+            ✓ Success screen with "Continue to Login" button</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Authenticated Shell</h2>
+        <div class="test-item">
+            <strong>Navigation</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Left navigation with 4 modules visible<br>
+            ✓ Top header with SmartCare logo and user menu<br>
+            ✓ User avatar shows "SK"<br>
+            ✓ User dropdown with Profile/Logout options</p>
+        </div>
+        <div class="test-item">
+            <strong>Module Switching</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Click each nav item switches content<br>
+            ✓ No page reload (SPA behavior)<br>
+            ✓ Active nav item highlighted<br>
+            ✓ Welcome panel shown by default</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Administrative Unit Module</h2>
+        <div class="test-item">
+            <strong>Tree View</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Bangladesh hierarchy displayed<br>
+            ✓ Expandable/collapsible nodes<br>
+            ✓ Division → District → Upazila → Union → Village structure<br>
+            ✓ City Corporation → Ward → Area structure<br>
+            ✓ Read-only (no edit controls)</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Location Management Module</h2>
+        <div class="test-item">
+            <strong>Table Display</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Location data table with all columns<br>
+            ✓ Sample data populated<br>
+            ✓ Upload (.xlsx) button present</p>
+        </div>
+        <div class="test-item">
+            <strong>File Upload</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Click Upload button opens file dialog<br>
+            ✓ Only .xlsx files accepted<br>
+            ✓ Non-.xlsx files show error modal<br>
+            ✓ Valid files show success modal<br>
+            ✓ Table refreshes after successful upload</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Health Facility Module</h2>
+        <div class="test-item">
+            <strong>Facility List</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Facility table with all columns<br>
+            ✓ Sample facilities displayed<br>
+            ✓ Pagination controls visible<br>
+            ✓ Add New Facility button present</p>
+        </div>
+        <div class="test-item">
+            <strong>Add Facility Form</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Modal opens with all required fields<br>
+            ✓ Facility Type dropdown with all options<br>
+            ✓ Administrative Unit selection updates Location dropdown<br>
+            ✓ Assigned Users section with add/remove functionality<br>
+            ✓ Form validation prevents submission without assigned users<br>
+            ✓ Success toast and table refresh on save</p>
+        </div>
+        <div class="test-item">
+            <strong>Facility Details</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Click facility name opens details modal<br>
+            ✓ Facility information displayed in cards<br>
+            ✓ Assigned users table visible<br>
+            ✓ Edit Facility and Add User buttons present</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>6. User Management Module</h2>
+        <div class="test-item">
+            <strong>User List</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ User table with all columns<br>
+            ✓ Sample users displayed<br>
+            ✓ Filter dropdowns for Facility and Role<br>
+            ✓ Search input field<br>
+            ✓ Pagination controls</p>
+        </div>
+        <div class="test-item">
+            <strong>Add User Form</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Modal opens with all required fields<br>
+            ✓ Role selection updates required fields<br>
+            ✓ Permissions checkboxes available<br>
+            ✓ Form validation works correctly<br>
+            ✓ Success toast and table refresh on save</p>
+        </div>
+        <div class="test-item">
+            <strong>Change Password</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Click Change Password opens modal<br>
+            ✓ New Password and Confirm Password fields<br>
+            ✓ Password mismatch validation<br>
+            ✓ Success toast on password update</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>7. Design System & Accessibility</h2>
+        <div class="test-item">
+            <strong>Visual Design</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Color palette matches reference (navy blue, sky blue, magenta)<br>
+            ✓ Consistent typography (Inter font)<br>
+            ✓ Proper spacing and layout<br>
+            ✓ High contrast for accessibility</p>
+        </div>
+        <div class="test-item">
+            <strong>Responsive Design</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Desktop layout (1280px+) works correctly<br>
+            ✓ Tablet layout adapts properly<br>
+            ✓ Mobile layout stacks appropriately<br>
+            ✓ Touch targets are 44px minimum</p>
+        </div>
+        <div class="test-item">
+            <strong>Keyboard Navigation</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Tab navigation works through all elements<br>
+            ✓ Focus indicators visible<br>
+            ✓ Enter key submits forms<br>
+            ✓ Escape key closes modals</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>8. Interactive Elements</h2>
+        <div class="test-item">
+            <strong>Modals</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Modals open and close properly<br>
+            ✓ Click outside closes modal<br>
+            ✓ Escape key closes modal<br>
+            ✓ Modal content is scrollable if needed</p>
+        </div>
+        <div class="test-item">
+            <strong>Toast Notifications</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Success toasts appear on actions<br>
+            ✓ Error toasts show validation messages<br>
+            ✓ Toasts auto-dismiss after 5 seconds<br>
+            ✓ Manual close button works</p>
+        </div>
+        <div class="test-item">
+            <strong>Form Validation</strong>
+            <span class="status pending">PENDING</span>
+            <p>✓ Required field validation<br>
+            ✓ Email format validation<br>
+            ✓ Password confirmation validation<br>
+            ✓ File type validation<br>
+            ✓ Inline error messages appear</p>
+        </div>
+    </div>
+
+    <div class="note">
+        <strong>Test Completion:</strong> Mark each test item as PASS or FAIL based on your testing. 
+        The prototype should demonstrate all specified functionality with proper error handling and user feedback.
+    </div>
+
+    <script>
+        // Simple test helper
+        function markTest(element, status) {
+            const statusElement = element.querySelector('.status');
+            statusElement.textContent = status;
+            statusElement.className = 'status ' + status.toLowerCase();
+        }
+        
+        // Add click handlers for easy testing
+        document.addEventListener('DOMContentLoaded', function() {
+            const testItems = document.querySelectorAll('.test-item');
+            testItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const currentStatus = this.querySelector('.status').textContent;
+                    if (currentStatus === 'PENDING') {
+                        markTest(this, 'PASS');
+                    } else if (currentStatus === 'PASS') {
+                        markTest(this, 'FAIL');
+                    } else {
+                        markTest(this, 'PENDING');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

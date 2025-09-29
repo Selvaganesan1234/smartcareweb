@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCare Mobile App - SK Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Design Tokens extracted from reference images */
+        :root {
+            /* Primary Colors */
+            --primary-blue: #1A237E;
+            --accent-pink: #E91E63;
+            --secondary-blue: #5C6BC0;
+            --light-blue: #C5CAE9;
+            
+            /* Background Colors */
+            --bg-primary: #F5F5F5;
+            --bg-surface: #FFFFFF;
+            --bg-card: #FFFFFF;
+            
+            /* Text Colors */
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --text-light: #BDBDBD;
+            --text-white: #FFFFFF;
+            
+            /* Accent Colors */
+            --accent-yellow: #FFF9C4;
+            --accent-purple: #E1BEE7;
+            --accent-light-blue: #90CAF9;
+            --accent-light-gray: #BDBDBD;
+            
+            /* Border & Shadow */
+            --border-light: #E0E0E0;
+            --shadow-subtle: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-elevated: 0 4px 8px rgba(0,0,0,0.15);
+            
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-size-xs: 12px;
+            --font-size-sm: 14px;
+            --font-size-md: 16px;
+            --font-size-lg: 18px;
+            --font-size-xl: 24px;
+            --font-size-xxl: 32px;
+            
+            /* Touch Targets */
+            --touch-target: 44px;
+            --touch-target-large: 56px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Mobile Container */
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--primary-blue);
+            color: var(--text-white);
+            padding: var(--spacing-md);
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .status-bar {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+
+        .header-title {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .icon-button {
+            width: var(--touch-target);
+            height: var(--touch-target);
+            border: none;
+            background: transparent;
+            color: var(--text-white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-family);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            min-height: var(--touch-target);
+        }
+
+        .btn-primary {
+            background: var(--accent-pink);
+            color: var(--text-white);
+            font-size: var(--font-size-md);
+        }
+
+        .btn-primary:hover {
+            background: #C2185B;
+        }
+
+        .btn-secondary {
+            background: var(--border-light);
+            color: var(--text-primary);
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-large {
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-size: var(--font-size-lg);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: var(--spacing-md);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-content {
+            padding: var(--spacing-md);
+        }
+
+        .card-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: var(--spacing-md);
+        }
+
+        .section-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        /* Home Screen Cards */
+        .home-cards {
+            display: grid;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .home-card {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow-subtle);
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .home-card:hover {
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .home-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            font-size: var(--font-size-xl);
+            color: var(--text-white);
+        }
+
+        .home-card-content {
+            flex: 1;
+        }
+
+        .home-card-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .home-card-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        /* Enrolled Card Special Styling */
+        .enrolled-card {
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--light-blue) 100%);
+            color: var(--text-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enrolled-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.1) 10px,
+                rgba(255,255,255,0.1) 20px
+            );
+        }
+
+        .enrolled-number {
+            font-size: var(--font-size-xxl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .enrolled-label {
+            font-size: var(--font-size-md);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .enrolled-subtitle {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+
+        /* Task Cards */
+        .task-cards {
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+
+        .task-card {
+            background: var(--bg-surface);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .task-card:hover {
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .task-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-number {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .task-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: var(--font-size-md);
+            font-family: var(--font-family);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            min-height: var(--touch-target);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            color: #D32F2F;
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-xs);
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* PIN Input */
+        .pin-container {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .pin-input {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            text-align: center;
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            background: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .pin-input:focus {
+            outline: none;
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
+        /* List Items */
+        .list-item {
+            background: var(--bg-surface);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .list-item:hover {
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .list-item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            font-size: var(--font-size-md);
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-size: var(--font-size-md);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .list-item-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .list-item-arrow {
+            color: var(--text-secondary);
+            font-size: var(--font-size-lg);
+        }
+
+        /* Status Indicators */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D32F2F;
+            margin-left: var(--spacing-sm);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: var(--touch-target-large);
+            height: var(--touch-target-large);
+            background: var(--accent-pink);
+            color: var(--text-white);
+            border: none;
+            border-radius: 50%;
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            box-shadow: var(--shadow-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xxl);
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: var(--font-size-xxl);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .empty-state-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .empty-state-text {
+            font-size: var(--font-size-md);
+        }
+
+        /* SMS Styles */
+        .sms-container {
+            background: var(--bg-primary);
+            padding: var(--spacing-md);
+        }
+
+        .sms-bubble {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-subtle);
+            max-width: 80%;
+        }
+
+        .sms-bubble.sent {
+            background: var(--accent-pink);
+            color: var(--text-white);
+            margin-left: auto;
+        }
+
+        .sms-time {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+            text-align: right;
+            margin-top: var(--spacing-xs);
+        }
+
+        .sms-bubble.sent .sms-time {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Success States */
+        .success-container {
+            text-align: center;
+            padding: var(--spacing-xxl);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            color: var(--text-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xxl);
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        .success-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .success-text {
+            font-size: var(--font-size-md);
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .filter-pill.active {
+            background: var(--accent-pink);
+            color: var(--text-white);
+            border-color: var(--accent-pink);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 320px) {
+            .mobile-container {
+                max-width: 100%;
+            }
+            
+            .pin-input {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus States */
+        .btn:focus,
+        .form-input:focus,
+        .pin-input:focus,
+        .list-item:focus,
+        .home-card:focus {
+            outline: 2px solid var(--accent-pink);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen 1: SMS Notifications & Onboarding -->
+    <div id="sms-screen" class="screen active">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">SmartCare</div>
+            </div>
+            
+            <div class="sms-container">
+                <div class="sms-bubble">
+                    <div class="sms-content">
+                        <strong>Welcome to SmartCare!</strong><br><br>
+                        Hello [SK Name],<br><br>
+                        You have been registered as a Shasthya Kormi. Please follow these steps:<br><br>
+                        1. Ensure you have internet connection<br>
+                        2. Download the SmartCare app<br>
+                        3. You will receive your username and setup link shortly
+                    </div>
+                    <div class="sms-time">10:15 AM</div>
+                </div>
+                
+                <div class="sms-bubble sent">
+                    <div class="sms-content">
+                        <strong>Account Setup</strong><br><br>
+                        Username: SK001234<br>
+                        Setup Link: https://smartcare.app/setup/abc123<br><br>
+                        Click the link to create your password and complete setup.
+                    </div>
+                    <div class="sms-time">10:16 AM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2: Account Setup -->
+    <div id="account-setup-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <button class="icon-button" onclick="showSMS()">←</button>
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">Account Setup</div>
+            </div>
+            
+            <div class="main-content">
+                <div class="form-group">
+                    <label class="form-label" for="new-password">New Password</label>
+                    <input type="password" id="new-password" class="form-input" placeholder="Enter password with at least 8 characters, 1 uppercase, 1 lowercase" required>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" class="form-input" placeholder="Confirm your password" required>
+                    <div class="error-message" id="confirm-error"></div>
+                </div>
+                
+                <div class="password-requirements">
+                    <div class="requirement-item">
+                        <span class="requirement-icon">✓</span>
+                        <span>At least 8 characters</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="requirement-icon">✓</span>
+                        <span>1 uppercase letter</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="requirement-icon">✓</span>
+                        <span>1 lowercase letter</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-full btn-large" onclick="handlePasswordSetup()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Login -->
+    <div id="login-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">SmartCare</div>
+            </div>
+            
+            <div class="main-content">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                    <div class="error-message" id="username-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                
+                <div class="form-links">
+                    <a href="#" onclick="showForgotPassword()" style="color: var(--accent-pink); text-decoration: none;">Forgot Password?</a>
+                </div>
+                
+                <button class="btn btn-primary btn-full btn-large" onclick="handleLogin()">Login</button>
+                
+                <div class="offline-notice" style="margin-top: var(--spacing-lg); padding: var(--spacing-md); background: #FFF3E0; border-radius: 8px; color: #E65100;">
+                    <strong>Offline Mode:</strong> You can login with cached credentials when offline.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 4: PIN Login -->
+    <div id="pin-login-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <button class="icon-button" onclick="showLogin()">←</button>
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">Quick Login</div>
+            </div>
+            
+            <div class="main-content">
+                <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+                    <div style="font-size: var(--font-size-lg); font-weight: 600; margin-bottom: var(--spacing-sm);">Enter your 4-digit PIN</div>
+                    <div style="color: var(--text-secondary);">Username: SK001234</div>
+                </div>
+                
+                <div class="pin-container">
+                    <input type="text" class="pin-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="pin-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="pin-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="pin-input" maxlength="1" pattern="[0-9]">
+                </div>
+                
+                <div class="error-message" id="pin-error" style="text-align: center; margin-top: var(--spacing-md);"></div>
+                
+                <button class="btn btn-secondary btn-full" onclick="showLogin()" style="margin-top: var(--spacing-lg);">
+                    Use Password Instead
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Home (Post-Login Landing) -->
+    <div id="home-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">PHC Kyalnuru</div>
+                <div class="header-actions">
+                    <button class="icon-button">⋮</button>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="search-bar">
+                    <span style="color: var(--text-secondary);">🔍</span>
+                    <input type="text" class="search-input" placeholder="Name, Mobile Number, ABHA Number">
+                    <span style="color: var(--text-secondary);">🎤</span>
+                </div>
+                
+                <button class="btn btn-primary btn-full" style="margin-bottom: var(--spacing-lg);">
+                    📱 Scan QR Code
+                </button>
+                
+                <!-- Enrolled Card -->
+                <div class="card enrolled-card" style="margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex: 1;">
+                            <div class="enrolled-number">530</div>
+                            <div class="enrolled-label">ENROLLED</div>
+                            <div class="enrolled-subtitle">in your area</div>
+                        </div>
+                        <div style="flex: 1; text-align: right; opacity: 0.3;">
+                            <div style="font-size: 48px;">→→→</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Your Tasks Section -->
+                <div class="section-title">Your Tasks</div>
+                <div class="filter-controls">
+                    <div class="filter-pill active">Your Villages</div>
+                </div>
+                
+                <div class="task-cards">
+                    <div class="task-card" onclick="showHouseholds()">
+                        <div class="task-icon" style="background: var(--accent-yellow);">49</div>
+                        <div class="task-content">
+                            <div class="task-number">49</div>
+                            <div class="task-label">Referred</div>
+                        </div>
+                        <div class="list-item-arrow">›</div>
+                    </div>
+                    
+                    <div class="task-card">
+                        <div class="task-icon" style="background: var(--accent-purple);">71</div>
+                        <div class="task-content">
+                            <div class="task-number">71</div>
+                            <div class="task-label">Follow-Up</div>
+                        </div>
+                        <div class="list-item-arrow">›</div>
+                    </div>
+                </div>
+                
+                <!-- This Month Section -->
+                <div class="section-title" style="margin-top: var(--spacing-xl);">This month</div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <div style="font-size: var(--font-size-xl); font-weight: 600; margin-bottom: var(--spacing-xs);">484</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-secondary); text-transform: uppercase;">REFERRED</div>
+                            </div>
+                            <div>
+                                <div style="font-size: var(--font-size-xl); font-weight: 600; margin-bottom: var(--spacing-xs);">947</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-secondary); text-transform: uppercase;">ON TREATMENT</div>
+                            </div>
+                            <div style="color: var(--accent-light-blue); font-size: var(--font-size-xl);">📊</div>
+                        </div>
+                        <button class="btn btn-secondary btn-full">
+                            View Dashboard ›
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="fab" onclick="showAddHousehold()">+</button>
+        </div>
+    </div>
+
+    <!-- Screen 6: Households List -->
+    <div id="households-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <button class="icon-button" onclick="showHome()">←</button>
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">Households</div>
+            </div>
+            
+            <div class="main-content">
+                <div class="search-bar">
+                    <span style="color: var(--text-secondary);">🔍</span>
+                    <input type="text" class="search-input" placeholder="Household Name / No">
+                    <button class="icon-button" style="color: var(--text-secondary);">✓</button>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                    <div style="font-weight: 600;">5 Households</div>
+                    <div class="filter-pill">
+                        🔽 Filter
+                    </div>
+                </div>
+                
+                <div class="list-item" onclick="showHouseholdDetails()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Kamara Household</div>
+                        <div class="list-item-subtitle">Household No: 28 • Members Registered: 4/4</div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showHouseholdDetails()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Mohom Household</div>
+                        <div class="list-item-subtitle">Household No: 31 • Members Registered: 3/5</div>
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showHouseholdDetails()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Bangura Household</div>
+                        <div class="list-item-subtitle">Household No: 32 • Members Registered: 3/3</div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showHouseholdDetails()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Koroma Household</div>
+                        <div class="list-item-subtitle">Household No: 12 • Members Registered: 2/2</div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showHouseholdDetails()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Sankoh Household</div>
+                        <div class="list-item-subtitle">Household No: 12 • Members Registered: 1/4</div>
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+            </div>
+            
+            <button class="fab" onclick="showAddHousehold()">+</button>
+        </div>
+    </div>
+
+    <!-- Screen 7: Household Details -->
+    <div id="household-details-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <button class="icon-button" onclick="showHouseholds()">←</button>
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">Kamara Household</div>
+                <div class="header-actions">
+                    <button class="icon-button">⋮</button>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <!-- Household Details Card -->
+                <div class="card" style="margin-bottom: var(--spacing-lg);">
+                    <div class="card-header">
+                        <div class="card-title">Household Details</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Household No:</strong> 19
+                        </div>
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Village:</strong> Gbinti
+                        </div>
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Landmark:</strong> Near Church
+                        </div>
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Household Head Mobile Number:</strong> 777123340
+                        </div>
+                        <div>
+                            <strong>Members Registered:</strong> 4/4
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Household Members -->
+                <div class="section-title">Household Members</div>
+                
+                <div class="list-item" onclick="showPatientProfile()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">George Kamara - 41 - M</div>
+                        <div class="list-item-subtitle">Patient ID: 98472</div>
+                    </div>
+                    <div class="list-item-arrow" style="color: var(--accent-pink);">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showPatientProfile()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Serena Kamara - 31 - F</div>
+                        <div class="list-item-subtitle">Patient ID: 98473</div>
+                    </div>
+                    <div class="list-item-arrow" style="color: var(--accent-pink);">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showPatientProfile()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Sam Kamara - 1 Month - M</div>
+                        <div class="list-item-subtitle">Patient ID: 98474</div>
+                    </div>
+                    <div class="list-item-arrow" style="color: var(--accent-pink);">›</div>
+                </div>
+                
+                <div class="list-item" onclick="showPatientProfile()">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Mark Kamara - 34 Months - M</div>
+                        <div class="list-item-subtitle">Patient ID: 98475</div>
+                    </div>
+                    <div class="list-item-arrow" style="color: var(--accent-pink);">›</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 8: Patient Health Profile -->
+    <div id="patient-profile-screen" class="screen">
+        <div class="mobile-container">
+            <div class="header">
+                <div class="header-top">
+                    <button class="icon-button" onclick="showHouseholdDetails()">←</button>
+                    <div class="status-bar">12:30</div>
+                    <div class="status-bar">78%</div>
+                </div>
+                <div class="header-title">George Kamara</div>
+                <div class="header-actions">
+                    <button class="icon-button">⋮</button>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <!-- Bio Data Card -->
+                <div class="card" style="margin-bottom: var(--spacing-lg);">
+                    <div class="card-header">
+                        <div class="card-title">Bio Data</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Name:</strong> George Kamara
+                        </div>
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Patient ID:</strong> 98472
+                        </div>
+                        <div style="margin-bottom: var(--spacing-sm);">
+                            <strong>Gender:</strong> Male
+                        </div>
+                        <div>
+                            <strong>Immunization Status:</strong> Up to Date
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service History -->
+                <div class="section-title">Service History</div>
+                
+                <div class="filter-controls">
+                    <div class="filter-pill active">All</div>
+                    <div class="filter-pill">This Week</div>
+                    <div class="filter-pill">This Month</div>
+                    <div class="filter-pill">This Year</div>
+                </div>
+                
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Health Assessment</div>
+                        <div class="list-item-subtitle">March 15, 2024 • Routine Check-up</div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Vaccination</div>
+                        <div class="list-item-subtitle">March 10, 2024 • COVID-19 Booster</div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">Follow-up Visit</div>
+                        <div class="list-item-subtitle">March 5, 2024 • Blood Pressure Check</div>
+                    </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+                
+                <div class="list-item">
+                    <div class="list-item-content">
+                            <div class="list-item-title">Initial Registration</div>
+                            <div class="list-item-subtitle">February 28, 2024 • New Patient</div>
+                        </div>
+                    <div class="list-item-arrow">›</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Setup Success Screen -->
+    <div id="password-success-screen" class="screen">
+        <div class="mobile-container">
+            <div class="success-container">
+                <div class="success-icon">✓</div>
+                <div class="success-title">Password Set Successfully</div>
+                <div class="success-text">Your account is now active. You can now log in with your new password.</div>
+                <button class="btn btn-primary btn-full btn-large" onclick="showLogin()">Continue to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Screen Navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showSMS() { showScreen('sms-screen'); }
+        function showAccountSetup() { showScreen('account-setup-screen'); }
+        function showLogin() { showScreen('login-screen'); }
+        function showPINLogin() { showScreen('pin-login-screen'); }
+        function showHome() { showScreen('home-screen'); }
+        function showHouseholds() { showScreen('households-screen'); }
+        function showHouseholdDetails() { showScreen('household-details-screen'); }
+        function showPatientProfile() { showScreen('patient-profile-screen'); }
+        function showPasswordSuccess() { showScreen('password-success-screen'); }
+
+        // Form Handling
+        function handlePasswordSetup() {
+            const password = document.getElementById('new-password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            
+            if (password.length < 8) {
+                showError('password-error', 'Password must be at least 8 characters');
+                return;
+            }
+            
+            if (!/[A-Z]/.test(password)) {
+                showError('password-error', 'Password must contain at least 1 uppercase letter');
+                return;
+            }
+            
+            if (!/[a-z]/.test(password)) {
+                showError('password-error', 'Password must contain at least 1 lowercase letter');
+                return;
+            }
+            
+            if (password !== confirm) {
+                showError('confirm-error', 'Passwords do not match');
+                return;
+            }
+            
+            showPasswordSuccess();
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username) {
+                showError('username-error', 'Username is required');
+                return;
+            }
+            
+            if (!password) {
+                showError('password-error', 'Password is required');
+                return;
+            }
+            
+            // Simulate login success
+            showHome();
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        function showForgotPassword() {
+            alert('Password reset functionality would be implemented here');
+        }
+
+        function showAddHousehold() {
+            alert('Add household functionality would be implemented here');
+        }
+
+        // PIN Input Handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const pinInputs = document.querySelectorAll('.pin-input');
+            
+            pinInputs.forEach((input, index) => {
+                input.addEventListener('input', function(e) {
+                    if (e.target.value.length === 1 && index < pinInputs.length - 1) {
+                        pinInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                        pinInputs[index - 1].focus();
+                    }
+                });
+            });
+        });
+
+        // Auto-advance through screens for demo
+        setTimeout(() => {
+            showAccountSetup();
+        }, 3000);
+    </script>
+</body>
+</html>

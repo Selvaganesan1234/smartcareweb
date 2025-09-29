@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCare Demo Guide</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #F8F9FB 0%, #E6ECF9 100%);
+            min-height: 100vh;
+        }
+        .demo-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1F3C73;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #F8F9FB;
+            border-radius: 8px;
+            border-left: 4px solid #E0426E;
+        }
+        .demo-step {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #E1E5ED;
+        }
+        .step-number {
+            background: #E0426E;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .highlight {
+            background: #E6ECF9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .credentials {
+            background: #7A8F6E;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #E1E5ED;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .feature-title {
+            color: #1F3C73;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .launch-btn {
+            background: #E0426E;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            transition: background-color 0.2s;
+        }
+        .launch-btn:hover {
+            background: #C73A5E;
+        }
+        .tech-specs {
+            background: #1F3C73;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .tech-specs h3 {
+            margin-top: 0;
+            color: #E6ECF9;
+        }
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .spec-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🏥 SmartCare Web App</h1>
+        <p style="text-align: center; font-size: 1.2rem; color: #5D6481; margin-bottom: 30px;">
+            Interactive Healthcare Management System for LMICs
+        </p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="index.html" class="launch-btn">🚀 Launch Prototype</a>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎯 Quick Start Guide</h2>
+            
+            <div class="demo-step">
+                <span class="step-number">1</span>
+                <strong>Launch the Application</strong><br>
+                Click the "Launch Prototype" button above to open the SmartCare Web App
+            </div>
+            
+            <div class="demo-step">
+                <span class="step-number">2</span>
+                <strong>Login to the System</strong><br>
+                Use these credentials to access the application:
+                <div class="credentials">
+                    Username: SK<br>
+                    Password: [any non-empty password]
+                </div>
+            </div>
+            
+            <div class="demo-step">
+                <span class="step-number">3</span>
+                <strong>Explore the Modules</strong><br>
+                Navigate through the four main modules using the left sidebar:
+                <ul>
+                    <li><span class="highlight">Administrative Unit</span> - View Bangladesh's administrative hierarchy</li>
+                    <li><span class="highlight">Location</span> - Manage location data with file upload</li>
+                    <li><span class="highlight">Health Facility</span> - CRUD operations for health facilities</li>
+                    <li><span class="highlight">User Management</span> - Manage system users and permissions</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>✨ Key Features to Test</h2>
+            
+            <div class="feature-list">
+                <div class="feature-card">
+                    <div class="feature-title">🔐 Authentication</div>
+                    <ul>
+                        <li>Login with validation</li>
+                        <li>Password setup flow</li>
+                        <li>Error handling</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">📊 Data Management</div>
+                    <ul>
+                        <li>Excel file upload (.xlsx)</li>
+                        <li>Table pagination</li>
+                        <li>Search and filtering</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">🏥 Facility Management</div>
+                    <ul>
+                        <li>Add/Edit facilities</li>
+                        <li>User assignment</li>
+                        <li>Facility details view</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">👥 User Management</div>
+                    <ul>
+                        <li>Role-based access</li>
+                        <li>Password management</li>
+                        <li>Permission settings</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">🌳 Administrative Tree</div>
+                    <ul>
+                        <li>Expandable hierarchy</li>
+                        <li>Bangladesh structure</li>
+                        <li>Read-only view</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">♿ Accessibility</div>
+                    <ul>
+                        <li>WCAG AA compliant</li>
+                        <li>Keyboard navigation</li>
+                        <li>High contrast design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎮 Interactive Demo Scenarios</h2>
+            
+            <div class="demo-step">
+                <strong>Scenario 1: File Upload Testing</strong><br>
+                1. Go to Location Management<br>
+                2. Click "Upload (.xlsx)" button<br>
+                3. Try uploading a non-.xlsx file (should show error)<br>
+                4. Try uploading a .xlsx file (should show success)
+            </div>
+            
+            <div class="demo-step">
+                <strong>Scenario 2: Facility Management</strong><br>
+                1. Go to Health Facility module<br>
+                2. Click "Add New Facility"<br>
+                3. Fill out the form (note required fields)<br>
+                4. Try submitting without assigned users (should show error)<br>
+                5. Add users and submit successfully
+            </div>
+            
+            <div class="demo-step">
+                <strong>Scenario 3: User Management</strong><br>
+                1. Go to User Management module<br>
+                2. Click "Add User"<br>
+                3. Fill out user details<br>
+                4. Select different roles to see field requirements change<br>
+                5. Submit the form
+            </div>
+            
+            <div class="demo-step">
+                <strong>Scenario 4: Administrative Hierarchy</strong><br>
+                1. Go to Administrative Unit module<br>
+                2. Click on expandable nodes to navigate the tree<br>
+                3. Explore Division → District → Upazila → Union structure<br>
+                4. Check City Corporation → Ward → Area structure
+            </div>
+        </div>
+
+        <div class="tech-specs">
+            <h3>🛠️ Technical Specifications</h3>
+            <div class="spec-grid">
+                <div class="spec-item">
+                    <strong>Design System</strong><br>
+                    Color palette extracted from reference image with WCAG AA compliance
+                </div>
+                <div class="spec-item">
+                    <strong>Responsive Design</strong><br>
+                    Desktop-first (1280px+) with mobile adaptation
+                </div>
+                <div class="spec-item">
+                    <strong>Performance</strong><br>
+                    Optimized for low-bandwidth LMIC contexts
+                </div>
+                <div class="spec-item">
+                    <strong>Accessibility</strong><br>
+                    Full keyboard navigation and screen reader support
+                </div>
+                <div class="spec-item">
+                    <strong>Browser Support</strong><br>
+                    Modern browsers (Chrome, Firefox, Safari, Edge)
+                </div>
+                <div class="spec-item">
+                    <strong>Framework</strong><br>
+                    Vanilla HTML/CSS/JavaScript for maximum compatibility
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📋 Testing Checklist</h2>
+            <p>For comprehensive testing, use the <a href="test-prototype.html" style="color: #E0426E; font-weight: 600;">detailed test checklist</a> which covers:</p>
+            <ul>
+                <li>✅ All authentication flows</li>
+                <li>✅ Form validation and error handling</li>
+                <li>✅ Modal interactions and navigation</li>
+                <li>✅ File upload functionality</li>
+                <li>✅ CRUD operations for all modules</li>
+                <li>✅ Responsive design testing</li>
+                <li>✅ Accessibility compliance</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0; padding: 20px; background: #E6ECF9; border-radius: 8px;">
+            <h3 style="color: #1F3C73; margin-top: 0;">Ready to Explore?</h3>
+            <p style="margin-bottom: 20px;">Click the launch button above to start exploring the SmartCare Web App prototype!</p>
+            <a href="index.html" class="launch-btn">🚀 Launch SmartCare Prototype</a>
+        </div>
+    </div>
+</body>
+</html>
+

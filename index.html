@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCare Web App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Splash/Home Screen -->
+    <div id="splash-screen" class="screen active">
+        <div class="splash-container">
+            <div class="logo-container">
+                <div class="smartcare-logo"></div>
+                <div class="smartcare-logo-text">SmartCare</div>
+                <div class="logo-subtitle">Healthcare Management System</div>
+            </div>
+            <button class="btn btn-primary btn-large" onclick="showLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
+        <div class="login-container">
+            <div class="logo-container">
+                <div class="smartcare-logo"></div>
+                <div class="smartcare-logo-text">SmartCare</div>
+            </div>
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <div class="error-message" id="username-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                <div class="form-links">
+                    <a href="#" onclick="showPasswordSetup()">Forgot Password</a>
+                    <a href="#" onclick="showPasswordSetup()">New Password</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Setup Screen -->
+    <div id="password-setup-screen" class="screen">
+        <div class="password-setup-container">
+            <div class="setup-header">
+                <h1>Set your password</h1>
+                <p>This is a one-time setup link that expires in 72 hours and can only be used once.</p>
+            </div>
+            <form class="password-form" onsubmit="handlePasswordSetup(event)">
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" name="new-password" placeholder="Enter password with at least 8 characters, 1 uppercase, 1 lowercase, 1 number" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Set Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Setup Success Screen -->
+    <div id="password-success-screen" class="screen">
+        <div class="success-container">
+            <div class="success-icon">✓</div>
+            <h2>Password set successfully</h2>
+            <p>Your account is now active. You can now log in with your new password.</p>
+            <button class="btn btn-primary" onclick="showLogin()">Continue to Login</button>
+        </div>
+    </div>
+
+    <!-- Authenticated Shell -->
+    <div id="authenticated-shell" class="screen">
+        <div class="shell-container">
+            <!-- Top Navigation -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="smartcare-logo-small"></div>
+                    <div class="logo-small">SmartCare</div>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <div class="user-avatar">SK</div>
+                        <div class="user-dropdown">
+                            <a href="#" onclick="showProfile()">Profile</a>
+                            <a href="#" onclick="logout()">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <!-- Left Navigation -->
+                <nav class="left-nav">
+                    <ul class="nav-list">
+                        <li class="nav-item-with-sub active">
+                            <a href="#" onclick="showModule('admin-unit')" class="nav-item active">Administrative Unit</a>
+                            <ul class="sub-nav-list">
+                                <li><a href="#" onclick="showSubModule('admin-unit', 'hierarchy')" class="sub-nav-item active">Hierarchy</a></li>
+                                <li><a href="#" onclick="showSubModule('admin-unit', 'add-unit')" class="sub-nav-item">Add Administrative Unit</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" onclick="showModule('health-facility')" class="nav-item">Health Facility</a></li>
+                        <li><a href="#" onclick="showModule('role-management')" class="nav-item">Role Management</a></li>
+                        <li><a href="#" onclick="showModule('user-management')" class="nav-item">User Management</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Right Content Area -->
+                <main class="content-area">
+                    <!-- Welcome Panel (Default) -->
+                    <div id="welcome-panel" class="module-content active">
+                        <div class="welcome-container">
+                            <h2>Welcome to SmartCare</h2>
+                            <p>Select a module from the left navigation to get started.</p>
+                        </div>
+                    </div>
+
+                    <!-- Administrative Unit Module -->
+                    <div id="admin-unit-module" class="module-content">
+                        <!-- Hierarchy Sub-module -->
+                        <div id="admin-unit-hierarchy" class="sub-module-content active">
+                            <div class="module-header">
+                                <h2>Administrative Unit Hierarchy</h2>
+                            </div>
+                            
+                            <!-- Root Location Creation -->
+                            <div class="root-location-section">
+                                <div class="root-location-form">
+                                    <label for="root-location">Add Root Location</label>
+                                    <div class="root-input-group">
+                                        <input type="text" id="root-location" class="form-control" placeholder="Enter root location (e.g., Bangladesh)" value="Bangladesh">
+                                        <button class="btn btn-primary" onclick="saveRootLocation()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Hierarchy Tree -->
+                            <div class="tree-container">
+                                <div class="hierarchy-view" id="admin-tree"></div>
+                            </div>
+                        </div>
+
+                        <!-- Add Administrative Unit Sub-module -->
+                        <div id="admin-unit-add-unit" class="sub-module-content">
+                            <div class="module-header">
+                                <h2>Add Administrative Unit</h2>
+                                <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="showUploadAdminUnit()">Upload</button>
+                                    <button class="btn btn-primary" onclick="showAddAdminUnit()">Add New Unit</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Filters -->
+                            <div class="filters">
+                                <select class="form-control" id="admin-division-filter">
+                                    <option value="">Filter by Division</option>
+                                    <option value="Dhaka">Dhaka</option>
+                                    <option value="Chittagong">Chittagong</option>
+                                    <option value="Sylhet">Sylhet</option>
+                                </select>
+                                <select class="form-control" id="admin-district-filter">
+                                    <option value="">Filter by District</option>
+                                </select>
+                                <select class="form-control" id="admin-category-filter">
+                                    <option value="">Filter by Category</option>
+                                    <option value="Rural">Rural</option>
+                                    <option value="Urban">Urban</option>
+                                </select>
+                                <select class="form-control" id="admin-type-filter">
+                                    <option value="">Filter by Type</option>
+                                </select>
+                                <input type="text" class="form-control" placeholder="Search Administrative Units" id="admin-search">
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Division</th>
+                                            <th>District</th>
+                                            <th>Administrative Unit Type</th>
+                                            <th>City Corporation / Upazila</th>
+                                            <th>Union / Ward</th>
+                                            <th>Village / Area</th>
+                                            <th>Administrative Unit Code</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-unit-table-body">
+                                        <!-- Sample data will be populated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Facility Module -->
+                    <div id="health-facility-module" class="module-content">
+                        <div class="module-header">
+                            <h2>Health Facility</h2>
+                            <button class="btn btn-primary" onclick="showAddFacility()">Add New Facility</button>
+                        </div>
+                        
+                        <!-- Filters -->
+                        <div class="filters">
+                            <select class="form-control" id="facility-division-filter" onchange="updateFacilityDistrictFilter(); filterFacilities();">
+                                <option value="">Filter by Division</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Sylhet">Sylhet</option>
+                            </select>
+                            <select class="form-control" id="facility-district-filter" onchange="filterFacilities();">
+                                <option value="">Filter by District</option>
+                            </select>
+                            <select class="form-control" id="facility-category-filter">
+                                <option value="">Filter by Category</option>
+                                <option value="Rural">Rural</option>
+                                <option value="Urban">Urban</option>
+                            </select>
+                            <select class="form-control" id="facility-type-filter">
+                                <option value="">Filter by Facility Type</option>
+                                <option value="Community Clinic">Community Clinic</option>
+                                <option value="Upazila Health Complex">Upazila Health Complex</option>
+                                <option value="BRAC Maternity Center">BRAC Maternity Center</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Search Health Facilities" id="facility-search">
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Facility Name</th>
+                                        <th>Facility Code</th>
+                                        <th>Facility Type</th>
+                                        <th>Parent Administrative Unit</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="facility-table-body">
+                                    <!-- Sample data will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <button class="btn btn-secondary" onclick="previousPage()">Previous</button>
+                            <span class="page-numbers">
+                                <button class="btn btn-secondary active">1</button>
+                                <button class="btn btn-secondary">2</button>
+                                <button class="btn btn-secondary">3</button>
+                            </span>
+                            <button class="btn btn-secondary" onclick="nextPage()">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Role Management Module -->
+                    <div id="role-management-module" class="module-content">
+                        <div class="module-header">
+                            <h2>Role Management</h2>
+                            <button class="btn btn-primary" onclick="showAddRole()">Add New Role</button>
+                        </div>
+                        
+                        <!-- Search Bar -->
+                        <div class="search-section">
+                            <input type="text" class="form-control" placeholder="Search Role by Name" id="role-search" oninput="searchRoles()">
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Role Name</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Permissions</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="role-table-body">
+                                    <!-- Sample data will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- User Management Module -->
+                    <div id="user-management-module" class="module-content">
+                        <div class="module-header">
+                            <h2>User Management</h2>
+                            <button class="btn btn-primary" onclick="showAddUser()">Add User</button>
+                        </div>
+                        <div class="filters" style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+                            <select class="form-control" id="user-district-filter" style="min-width: 150px; flex: 1;">
+                                <option value="">Filter by District</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Gazipur">Gazipur</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Sylhet">Sylhet</option>
+                            </select>
+                            <select class="form-control" id="user-upazila-filter" style="min-width: 180px; flex: 1;">
+                                <option value="">Filter by Upazila/City Corporation</option>
+                                <option value="Dhanmondi Upazila">Dhanmondi Upazila</option>
+                                <option value="Savar Upazila">Savar Upazila</option>
+                                <option value="Dhaka City Corporation">Dhaka City Corporation</option>
+                                <option value="Chittagong City Corporation">Chittagong City Corporation</option>
+                                <option value="Sylhet Sadar City Corporation">Sylhet Sadar City Corporation</option>
+                            </select>
+                            <select class="form-control" id="user-union-filter" style="min-width: 150px; flex: 1;">
+                                <option value="">Filter by Union/Ward</option>
+                                <option value="Dhanmondi Union">Dhanmondi Union</option>
+                                <option value="Gulshan Union">Gulshan Union</option>
+                                <option value="Ward 1">Ward 1</option>
+                                <option value="Ward 2">Ward 2</option>
+                            </select>
+                            <select class="form-control" id="user-village-filter" style="min-width: 150px; flex: 1;">
+                                <option value="">Filter by Village/Area</option>
+                                <option value="Dhanmondi 27">Dhanmondi 27</option>
+                                <option value="Gulshan 1">Gulshan 1</option>
+                                <option value="Area A">Area A</option>
+                                <option value="Area B">Area B</option>
+                            </select>
+                            <select class="form-control" id="facility-filter" style="min-width: 180px; flex: 1;">
+                                <option value="">Filter by Health Facility</option>
+                                <option value="Dhaka Medical College Hospital">Dhaka Medical College Hospital</option>
+                                <option value="Community Clinic - Dhanmondi">Community Clinic - Dhanmondi</option>
+                                <option value="Upazila Health Complex - Savar">Upazila Health Complex - Savar</option>
+                            </select>
+                            <select class="form-control" id="role-filter" style="min-width: 120px; flex: 1;">
+                                <option value="">Filter by Role</option>
+                                <option value="SK">SK</option>
+                                <option value="Doctor">Doctor</option>
+                                <option value="Nurse">Nurse</option>
+                                <option value="Community Health Worker">Community Health Worker</option>
+                                <option value="Administrator">Administrator</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Search by Name, Username, Phone" id="user-search" style="min-width: 200px; flex: 1;">
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Phone Number</th>
+                                        <th>Role</th>
+                                        <th>Health Facility</th>
+                                        <th>Gender</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-table-body">
+                                    <!-- Sample data will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <button class="btn btn-secondary" onclick="previousPage()">Previous</button>
+                            <span class="page-numbers">
+                                <button class="btn btn-secondary active">1</button>
+                                <button class="btn btn-secondary">2</button>
+                                <button class="btn btn-secondary">3</button>
+                            </span>
+                            <button class="btn btn-secondary" onclick="nextPage()">Next</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <!-- Modal content will be dynamically inserted -->
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
