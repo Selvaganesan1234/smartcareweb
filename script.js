@@ -169,6 +169,8 @@ function handleLogin(event) {
         showScreen('authenticated-shell');
         showToast('Login successful!', 'success');
         populateTables();
+        // Redirect to User Management as default
+        showModule('user-management');
     } else {
         // Show appropriate error messages
         if (username !== 'SK') {
@@ -424,6 +426,14 @@ function saveRootLocation() {
     
     console.log('Root location updated:', adminTreeData);
     
+    // Hide the input field and show saved name as static text
+    const rootLocationSection = document.querySelector('.root-location-section');
+    rootLocationSection.innerHTML = `
+        <div class="saved-root-location">
+            <h3>Root Location: <span class="root-location-name">${rootName}</span></h3>
+        </div>
+    `;
+    
     // Reload the hierarchy
     loadAdminTree();
     
@@ -451,32 +461,6 @@ function addChildUnit(parentName, parentType) {
                     </div>
                 </div>
                 
-                <!-- Default Attributes Section (View Only) -->
-                <div class="default-attributes-section">
-                    <h4>Default Attributes</h4>
-                    <div class="default-attributes-list">
-                        <div class="default-attribute-item">
-                            <label>Administrative Unit Hierarchy</label>
-                            <div class="attribute-value">Auto-generated from user input</div>
-                        </div>
-                        <div class="default-attribute-item">
-                            <label>Administrative Unit Type</label>
-                            <div class="attribute-value">Auto-determined based on hierarchy level</div>
-                        </div>
-                        <div class="default-attribute-item">
-                            <label>Parent Unit</label>
-                            <div class="attribute-value">${parentName}</div>
-                        </div>
-                        <div class="default-attribute-item">
-                            <label>Administrative Unit Code</label>
-                            <div class="attribute-value">Auto-generated based on hierarchy</div>
-                        </div>
-                        <div class="default-attribute-item">
-                            <label>Description</label>
-                            <div class="attribute-value">Auto-generated from unit type and location</div>
-                        </div>
-                    </div>
-                </div>
                 
                 <!-- Custom Attributes Section -->
                 <div class="custom-attributes-section">
@@ -699,6 +683,99 @@ function refreshLocationTable() {
     showToast('Table updated with new data', 'success');
 }
 
+// Health Facility Upload
+function showHealthFacilityUpload() {
+    const modalContent = `
+        <div class="modal-header">
+            <h3 class="modal-title">Upload Health Facility Data</h3>
+        </div>
+        <div class="modal-body">
+            <p>Upload an Excel (.xlsx) file containing the health facility data. Required columns are:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li>Facility Name</li>
+                <li>Facility Type</li>
+                <li>Administrative Unit Type</li>
+                <li>Division</li>
+                <li>District</li>
+                <li>Upazila</li>
+                <li>Union / Village / Area</li>
+                <li>Address</li>
+                <li>Phone Number</li>
+                <li>Email</li>
+                <li>Latitude</li>
+                <li>Longitude</li>
+                <li>Description</li>
+                <li>User Details (Phone Number, Username, Gender, Role, Reports To Role, Reports To)</li>
+            </ul>
+            <div class="form-group">
+                <label for="health-facility-file">Select Excel File</label>
+                <input type="file" id="health-facility-file" class="form-control" accept=".xlsx" onchange="handleHealthFacilityUpload(this)">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="downloadHealthFacilityTemplate()">Download Template</button>
+            <button class="btn btn-primary" onclick="processHealthFacilityUpload()">Upload File</button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+function downloadHealthFacilityTemplate() {
+    // Create Excel template data
+    const templateData = [
+        ['Facility Name', 'Facility Type', 'Administrative Unit Type', 'Division', 'District', 'Upazila', 'Union / Village / Area', 'Address', 'Phone Number', 'Email', 'Latitude', 'Longitude', 'Description', 'User Phone Number', 'Username', 'Gender', 'Role', 'Reports To Role', 'Reports To']
+    ];
+    
+    // Convert to CSV format for download
+    const csvContent = templateData.map(row => row.join(',')).join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Health_Facility_Template.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    showToast('Template downloaded successfully', 'success');
+}
+
+function handleHealthFacilityUpload(input) {
+    const file = input.files[0];
+    if (file && !file.name.endsWith('.xlsx')) {
+        showToast('Only .xlsx files are allowed', 'error');
+        input.value = '';
+        return;
+    }
+}
+
+function processHealthFacilityUpload() {
+    const fileInput = document.getElementById('health-facility-file');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        showToast('Please select a file', 'error');
+        return;
+    }
+    
+    // Simulate file processing
+    showToast('Processing file...', 'warning');
+    
+    setTimeout(() => {
+        closeModal();
+        showToast('Health Facility data uploaded successfully', 'success');
+        
+        // Refresh the table
+        setTimeout(() => {
+            showToast('Health Facility table updated', 'success');
+        }, 500);
+    }, 2000);
+}
+
 // Health Facility Management
 function showAddFacility() {
     const modalContent = `
@@ -728,17 +805,14 @@ function showAddFacility() {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="admin-unit-category">Administrative Unit Category *</label>
-                        <select id="admin-unit-category" class="form-control" required onchange="updateAdminUnitType()">
-                            <option value="">Select Category</option>
-                            <option value="Urban">Urban</option>
-                            <option value="Rural">Rural</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="admin-unit-type">Administrative Unit Type *</label>
                         <select id="admin-unit-type" class="form-control" required onchange="updateHierarchyDropdowns()">
                             <option value="">Select Type</option>
+                            <option value="Division">Division</option>
+                            <option value="District">District</option>
+                            <option value="Upazila">Upazila</option>
+                            <option value="Union">Union</option>
+                            <option value="Village">Village</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -834,8 +908,37 @@ function showAddFacility() {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="user-reports-to">Reports To</label>
-                                <input type="text" id="user-reports-to" class="form-control" placeholder="Health Facility & Supervisor">
+                                <label for="user-reports-to-role">Reports To (Role) *</label>
+                                <select id="user-reports-to-role" class="form-control" required onchange="updateFacilityReportsToUsers()">
+                                    <option value="">Select Role</option>
+                                    <option value="Doctor">Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Administrator">Administrator</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-reports-to-user">Reports To (User) *</label>
+                                <select id="user-reports-to-user" class="form-control" required>
+                                    <option value="">Select User</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-admin-unit">Administrative Unit *</label>
+                                <select id="user-admin-unit" class="form-control" required>
+                                    <option value="">Select Unit</option>
+                                    <option value="Dhaka Division">Dhaka Division</option>
+                                    <option value="Chittagong Division">Chittagong Division</option>
+                                    <option value="Sylhet Division">Sylhet Division</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-facility">Health Facility *</label>
+                                <select id="user-facility" class="form-control" required>
+                                    <option value="">Select Facility</option>
+                                    <option value="Dhaka Medical College Hospital">Dhaka Medical College Hospital</option>
+                                    <option value="Community Clinic - Dhanmondi">Community Clinic - Dhanmondi</option>
+                                    <option value="Upazila Health Complex - Savar">Upazila Health Complex - Savar</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="user-division">Division *</label>
@@ -1210,6 +1313,29 @@ function updateUserVillage() {
     }
 }
 
+function updateFacilityReportsToUsers() {
+    const selectedRole = document.getElementById('user-reports-to-role').value;
+    const userSelect = document.getElementById('user-reports-to-user');
+    
+    userSelect.innerHTML = '<option value="">Select User</option>';
+    
+    // Mock users based on role
+    const usersByRole = {
+        'Doctor': ['Dr. Ahmed Rahman', 'Dr. Salma Khatun', 'Dr. Mohammad Ali'],
+        'Nurse': ['Nurse Fatima Begum', 'Nurse - Nasrin'],
+        'Administrator': ['Administrator - Hasan']
+    };
+    
+    if (usersByRole[selectedRole]) {
+        usersByRole[selectedRole].forEach(user => {
+            const option = document.createElement('option');
+            option.value = user;
+            option.textContent = user;
+            userSelect.appendChild(option);
+        });
+    }
+}
+
 function handleAddFacility() {
     const form = document.getElementById('add-facility-form');
     
@@ -1252,8 +1378,8 @@ function showAddUser() {
                         <input type="text" id="last-name" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="user-email">Email ID *</label>
-                        <input type="email" id="user-email" class="form-control" required>
+                        <label for="user-email">Email ID</label>
+                        <input type="email" id="user-email" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="user-phone">Phone Number *</label>
@@ -1261,7 +1387,10 @@ function showAddUser() {
                     </div>
                     <div class="form-group">
                         <label for="username">Username *</label>
-                        <input type="text" id="username" class="form-control" required>
+                        <div class="username-container">
+                            <input type="text" id="username" class="form-control" required oninput="validateUsername(this.value)">
+                            <span id="username-status" class="username-status"></span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender *</label>
@@ -1285,16 +1414,23 @@ function showAddUser() {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="reports-to">Reports To</label>
-                        <select id="reports-to" class="form-control">
-                            <option value="">Select Supervisor</option>
-                            <option value="ahmed.rahman">Dr. Ahmed Rahman</option>
-                            <option value="hasan.admin">Administrator - Hasan</option>
+                        <label for="reports-to-role">Reports To (Role) *</label>
+                        <select id="reports-to-role" class="form-control" required onchange="updateReportsToUsers()">
+                            <option value="">Select Role</option>
+                            <option value="Doctor">Doctor</option>
+                            <option value="Nurse">Nurse</option>
+                            <option value="Administrator">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reports-to-user">Reports To (User) *</label>
+                        <select id="reports-to-user" class="form-control" required>
+                            <option value="">Select User</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="health-facility">Health Facility</label>
-                        <select id="health-facility" class="form-control">
+                        <select id="health-facility" class="form-control" onchange="validateFacilityOrAdminUnit()">
                             <option value="">Select Facility</option>
                             <option value="Dhaka Medical College Hospital">Dhaka Medical College Hospital</option>
                             <option value="Community Clinic - Dhanmondi">Community Clinic - Dhanmondi</option>
@@ -1303,29 +1439,12 @@ function showAddUser() {
                     </div>
                     <div class="form-group">
                         <label for="admin-unit-user">Administrative Unit</label>
-                        <select id="admin-unit-user" class="form-control">
+                        <select id="admin-unit-user" class="form-control" onchange="validateFacilityOrAdminUnit()">
                             <option value="">Select Unit</option>
                             <option value="Dhaka Division">Dhaka Division</option>
                             <option value="Chittagong Division">Chittagong Division</option>
                             <option value="Sylhet Division">Sylhet Division</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="location-user">Location</label>
-                        <select id="location-user" class="form-control">
-                            <option value="">Select Location</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Permissions</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                        <label><input type="checkbox" value="household"> Household Registration</label>
-                        <label><input type="checkbox" value="followup"> Follow-up Tasks</label>
-                        <label><input type="checkbox" value="reporting"> Reporting</label>
-                        <label><input type="checkbox" value="dashboard"> Dashboard</label>
-                        <label><input type="checkbox" value="user-management"> User Management</label>
-                        <label><input type="checkbox" value="facility-management"> Facility Management</label>
                     </div>
                 </div>
             </form>
@@ -1337,6 +1456,62 @@ function showAddUser() {
     `;
     
     showModal(modalContent);
+}
+
+// Username validation with real-time feedback
+function validateUsername(username) {
+    const statusElement = document.getElementById('username-status');
+    if (!username) {
+        statusElement.innerHTML = '';
+        return;
+    }
+    
+    // Simulate API call for username validation
+    setTimeout(() => {
+        // Mock validation - in real app, this would be an API call
+        const existingUsernames = ['ahmed.rahman', 'fatima.begum', 'karim.chw', 'salma.khatun', 'hasan.admin'];
+        const isAvailable = !existingUsernames.includes(username);
+        
+        if (isAvailable) {
+            statusElement.innerHTML = '✅';
+            statusElement.className = 'username-status available';
+        } else {
+            statusElement.innerHTML = '❌';
+            statusElement.className = 'username-status unavailable';
+        }
+    }, 500);
+}
+
+function updateReportsToUsers() {
+    const selectedRole = document.getElementById('reports-to-role').value;
+    const userSelect = document.getElementById('reports-to-user');
+    
+    userSelect.innerHTML = '<option value="">Select User</option>';
+    
+    // Mock users based on role
+    const usersByRole = {
+        'Doctor': ['Dr. Ahmed Rahman', 'Dr. Salma Khatun', 'Dr. Mohammad Ali'],
+        'Nurse': ['Nurse Fatima Begum', 'Nurse - Nasrin'],
+        'Administrator': ['Administrator - Hasan']
+    };
+    
+    if (usersByRole[selectedRole]) {
+        usersByRole[selectedRole].forEach(user => {
+            const option = document.createElement('option');
+            option.value = user;
+            option.textContent = user;
+            userSelect.appendChild(option);
+        });
+    }
+}
+
+function validateFacilityOrAdminUnit() {
+    const healthFacility = document.getElementById('health-facility').value;
+    const adminUnit = document.getElementById('admin-unit-user').value;
+    
+    if (!healthFacility && !adminUnit) {
+        showToast('Please select either Health Facility or Administrative Unit', 'error');
+    }
 }
 
 function updateRoleFields() {
@@ -1511,15 +1686,16 @@ function showAddRole() {
                     <input type="text" id="role-name" class="form-control" required placeholder="Enter role name">
                 </div>
                 <div class="form-group">
-                    <label for="role-description">Description *</label>
-                    <textarea id="role-description" class="form-control" required placeholder="Enter role description" rows="3"></textarea>
+                    <label for="role-description">Description</label>
+                    <textarea id="role-description" class="form-control" placeholder="Enter role description" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="role-type">Role Type</label>
-                    <select id="role-type" class="form-control">
-                        <option value="">Select Type (Optional)</option>
+                    <label for="role-type">Role Type *</label>
+                    <select id="role-type" class="form-control" required>
+                        <option value="">Select Type</option>
                         <option value="Facility">Facility</option>
                         <option value="Administrative Unit">Administrative Unit</option>
+                        <option value="Both">Both</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1565,7 +1741,7 @@ function saveRole() {
     const description = document.getElementById('role-description').value.trim();
     const roleType = document.getElementById('role-type').value;
     
-    if (!roleName || !description) {
+    if (!roleName || !roleType) {
         showToast('Please fill in all required fields', 'error');
         return;
     }
@@ -1974,6 +2150,30 @@ function editAdminUnit(code) {
 
 function deleteAdminUnit(code) {
     showToast(`Delete functionality for ${code} - Coming soon`, 'warning');
+}
+
+// Download Administrative Unit Template
+function downloadAdminUnitTemplate() {
+    // Create Excel template data
+    const templateData = [
+        ['Division', 'District', 'Administrative Unit Category', 'Administrative Unit Type', 'City Corporation', 'Upazala', 'Union', 'Ward', 'Village', 'Area', 'Administrative Unit Code']
+    ];
+    
+    // Convert to CSV format for download
+    const csvContent = templateData.map(row => row.join(',')).join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Administrative_Unit_Bulk_Template.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    showToast('Template downloaded successfully', 'success');
 }
 
 // Upload Administrative Unit

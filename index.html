@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCare Web App</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=6">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -23,27 +23,31 @@
     <!-- Login Screen -->
     <div id="login-screen" class="screen">
         <div class="login-container">
-            <div class="logo-container">
-                <div class="smartcare-logo"></div>
-                <div class="smartcare-logo-text">SmartCare</div>
+            <div class="login-header">
+                <div class="smartcare-logo-container">
+                    <img src="smartcare-logo.svg?v=1" alt="SmartCare Logo" class="smartcare-logo-image">
+                </div>
+                <div class="smartcare-logo-text-new">SmartCare</div>
             </div>
-            <form class="login-form" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
-                    <div class="error-message" id="username-error"></div>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                    <div class="error-message" id="password-error"></div>
-                </div>
-                <div class="form-links">
-                    <a href="#" onclick="showPasswordSetup()">Forgot Password</a>
-                    <a href="#" onclick="showPasswordSetup()">New Password</a>
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">Login</button>
-            </form>
+            <div class="login-card">
+                <h2 class="login-title">Log in to your account</h2>
+                <form class="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="username">Email address</label>
+                        <input type="text" id="username" name="username" required>
+                        <div class="error-message" id="username-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-field-container">
+                            <input type="password" id="password" name="password" required>
+                            <a href="#" onclick="showPasswordSetup()" class="forgot-password-link">Forgot password?</a>
+                        </div>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full login-btn">Log in</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -102,16 +106,16 @@
                 <!-- Left Navigation -->
                 <nav class="left-nav">
                     <ul class="nav-list">
-                        <li class="nav-item-with-sub active">
-                            <a href="#" onclick="showModule('admin-unit')" class="nav-item active">Administrative Unit</a>
+                        <li class="nav-item-with-sub">
+                            <a href="#" onclick="showModule('admin-unit')" class="nav-item">Administrative Unit</a>
                             <ul class="sub-nav-list">
-                                <li><a href="#" onclick="showSubModule('admin-unit', 'hierarchy')" class="sub-nav-item active">Hierarchy</a></li>
+                                <li><a href="#" onclick="showSubModule('admin-unit', 'hierarchy')" class="sub-nav-item">Hierarchy</a></li>
                                 <li><a href="#" onclick="showSubModule('admin-unit', 'add-unit')" class="sub-nav-item">Add Administrative Unit</a></li>
                             </ul>
                         </li>
-                        <li><a href="#" onclick="showModule('health-facility')" class="nav-item">Health Facility</a></li>
                         <li><a href="#" onclick="showModule('role-management')" class="nav-item">Role Management</a></li>
-                        <li><a href="#" onclick="showModule('user-management')" class="nav-item">User Management</a></li>
+                        <li><a href="#" onclick="showModule('user-management')" class="nav-item active">User Management</a></li>
+                        <li><a href="#" onclick="showModule('health-facility')" class="nav-item">Health Facility</a></li>
                     </ul>
                 </nav>
 
@@ -155,6 +159,7 @@
                             <div class="module-header">
                                 <h2>Add Administrative Unit</h2>
                                 <div class="header-actions">
+                                    <button class="btn btn-secondary" onclick="downloadAdminUnitTemplate()">Download Template</button>
                                     <button class="btn btn-secondary" onclick="showUploadAdminUnit()">Upload</button>
                                     <button class="btn btn-primary" onclick="showAddAdminUnit()">Add New Unit</button>
                                 </div>
@@ -208,7 +213,10 @@
                     <div id="health-facility-module" class="module-content">
                         <div class="module-header">
                             <h2>Health Facility</h2>
-                            <button class="btn btn-primary" onclick="showAddFacility()">Add New Facility</button>
+                            <div class="header-actions">
+                                <button class="btn btn-secondary" onclick="showHealthFacilityUpload()">Upload</button>
+                                <button class="btn btn-primary" onclick="showAddFacility()">Add New Facility</button>
+                            </div>
                         </div>
                         
                         <!-- Filters -->

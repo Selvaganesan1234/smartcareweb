@@ -419,16 +419,97 @@ p {
     justify-content: center;
     min-height: 100vh;
     padding: var(--space-8);
-    background: linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%);
+    background: #FFFFFF;
 }
 
-.login-form {
+.login-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.smartcare-logo-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.smartcare-logo-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.smartcare-logo-text-new {
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    color: var(--primary-700);
+    letter-spacing: -0.5px;
+}
+
+.login-card {
     width: 100%;
     max-width: 400px;
     background: var(--surface-elevated);
     padding: var(--space-8);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-light);
+}
+
+.login-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    text-align: center;
+}
+
+.login-form {
+    width: 100%;
+}
+
+.password-field-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+}
+
+.password-field-container input {
+    flex: 1;
+    margin-right: var(--space-3);
+}
+
+.forgot-password-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+}
+
+.forgot-password-link:hover {
+    color: var(--accent-500);
+    text-decoration: underline;
+}
+
+.login-btn {
+    background-color: var(--primary-700);
+    border-color: var(--primary-700);
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    padding: var(--space-4) var(--space-6);
+    margin-top: var(--space-4);
+}
+
+.login-btn:hover:not(:disabled) {
+    background-color: var(--primary-800);
+    border-color: var(--primary-800);
 }
 
 /* Password Setup Screen */
@@ -1452,6 +1533,48 @@ p {
         --text-secondary: #000000;
         --text-muted: #333333;
     }
+}
+
+/* Username Validation Styles */
+.username-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.username-status {
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.username-status.available {
+    color: var(--success-500);
+}
+
+.username-status.unavailable {
+    color: var(--error-500);
+}
+
+/* Saved Root Location Styles */
+.saved-root-location {
+    background-color: var(--success-50);
+    border: 1px solid var(--success-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.saved-root-location h3 {
+    color: var(--success-700);
+    margin: 0;
+    font-size: var(--font-size-lg);
+}
+
+.root-location-name {
+    color: var(--success-600);
+    font-weight: 600;
 }
 
 /* Print Styles */
